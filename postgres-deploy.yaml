@@ -1,0 +1,26 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pg-cluster-2
+  labels:
+    app: postgres-db-2
+spec:
+  imageName: ghcr.io/cloudnative-pg/postgresql:15.2
+  instances: 2
+  startDelay: 200
+  stopDelay: 60
+  primaryUpdateStrategy: unsupervised
+
+  bootstrap:
+    initdb:
+      database: keycloakdb
+      owner: dbuser
+      secret:
+        name: pg-app-user-secret-2
+
+  superuserSecret:
+    name: pg-superuser-secret-2
+
+  storage:
+    storageClass: standard
+    size: 1Gi

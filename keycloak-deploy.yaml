@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+  labels:
+    app: keycloak
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: keycloak
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      containers:
+      - name: keycloak
+        image: quay.io/keycloak/keycloak:latest
+        args: ["start"]
+        env:
+          - name: KC_DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: pg-app-user-secret-2
+                key: username
+          - name: KC_DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: pg-app-user-secret-2
+                key: password
+          - name: KEYCLOAK_ADMIN_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: keycloak-admin-secret
+                key: password
+        envFrom:
+          - configMapRef:
+              name: configmap-keycloak
+        ports:
+        - name: https
+          containerPort: 443
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /realms/master
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10 

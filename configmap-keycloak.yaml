@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: configmap-keycloak
+  labels: 
+    app: keycloak
+data:
+  KC_HOSTNAME: "af-keycloak.online"
+  KEYCLOAK_ADMIN: "admin"
+  KC_LOG_LEVEL: "INFO"
+  KC_DB: "postgres"
+  KC_DB_URL: "jdbc:postgresql://pg-cluster-2-rw:5432/keycloakdb"
+  KC_PROXY: "edge"
+  KC_HTTP_ENABLED: "false"
+  PROXY_ADDRESS_FORWARDING: "true"
+  KC_TRANSACTION_XA_ENABLE: "false"
+  KC_HOSTNAME_STRICT: "false"
+  KC_HTTPS_PORT: "443"
+  JAVA_OPTS_APPEND: "-Djgroups.dns.query=keycloak-service"
+  JGROUPS_DISCOVERY_PROTOCOL: "dns.DNS_PING"
+  JGROUPS_DISCOVERY_PROPERTIES: "dns_query=keycloak"
+  CACHE_OWNERS_COUNT: "2"
+  CACHE_OWNERS_AUTH_SESSIONS_COUNT: "2"
+  KC_CACHE_STACK: "kubernetes"
+  KC_HEALTH_ENABLED: "true"
