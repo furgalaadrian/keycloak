@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: keycloak-ingress 
+  annotations: 
+    cert-manager.io/issuer: letsencrypt-production
+spec:
+  tls:
+    - hosts:
+      - af-keycloak.online 
+      secretName: web-ssl
+  rules:
+  - host: af-keycloak.online 
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: keycloak-service
+            port:
+              number: 443
